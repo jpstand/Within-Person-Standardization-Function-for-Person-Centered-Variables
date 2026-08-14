@@ -1,6 +1,6 @@
 
 ps_standardization <- function(df, wp_vec = c(), bp_vec = c(), id, lag_bool = FALSE, lead_bool = FALSE, 
-                               lag_n = 0L, lead_n = 0L, lag_vec = c(), lead_vec = c()) {
+                               lag_n = 1L, lead_n = 1L, lag_vec = c(), lead_vec = c()) {
   #this function assumes (1) your wp_vec and bp_vec will contain within-person and between-person components 
   #of person-centered variables, respectively, and (2) that your day is already temporally arranged.
   

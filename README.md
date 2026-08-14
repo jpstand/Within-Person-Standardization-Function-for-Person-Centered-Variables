@@ -3,13 +3,13 @@ This is an R function to standardize person-centered variables using the person-
 
 
 Function arguments
-df - long-format data frame
-wp_vec - within-person component variables to standardize (each divided by that person's within-person sd)
-bp_vec - between-person component variables to standardize (divided by the global sd, computed from one row per person)
-id - name of the ID variable as a string
-lag_bool/lead_bool - whether to create lagged/led versions
-lag_n/lead_n - number of positions to lag/lead (default 1)
-lag_vec/lead_vec - variables to lag/lead. Enter the original variable names (not the _z versions); these must already be in wp_vec. The lag/lead is applied to the standardized values
+* df - long-format data frame
+* wp_vec - within-person component variables to standardize (each divided by that person's within-person sd)
+* bp_vec - between-person component variables to standardize (divided by the global sd, computed from one row per person)
+* id - name of the ID variable as a string
+* lag_bool/lead_bool - whether to create lagged/led versions
+* lag_n/lead_n - number of positions to lag/lead (default 1)
+* lag_vec/lead_vec - variables to lag/lead. Enter the original variable names (not the _z versions); these must already be in wp_vec. The lag/lead is applied to the standardized values
 
 This function assumes that data are already sorted in temporal order within person. Participants with only one observation are dropped automatically because a within-person SD can't be computed from a single point.
 

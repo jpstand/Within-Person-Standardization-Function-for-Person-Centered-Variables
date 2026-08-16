@@ -16,7 +16,7 @@ ps_standardization <- function(df, wp_vec = c(), bp_vec = c(), id, non_c_bp_vars
 
   #non_c_bp_vars is for non centered between-person (i.e., level 2) variables. For example, 
   #if you want to control for and standardize a variable containing the age of participants, but the variable
-  #has not yet been centered, you can add the name to non_centered_bp_vars
+  #has not yet been centered, you can add the name to non_c_bp_vars
   
   one_obs_ids <- df |>
     dplyr::count(.data[[id]]) |>

@@ -7,6 +7,7 @@ Function arguments
 * wp_vec - within-person component variables to standardize (each divided by that person's within-person sd)
 * bp_vec - between-person component variables to standardize (divided by the global sd, computed from one row per person)
 * id - name of the ID variable as a string
+* non_c_bp_vars - other between-person variables that aren't yet centered to standardize (the difference between each raw value and the global mean is divided by the global sd; global mean and sd are computed from one row per person)
 * lag_bool/lead_bool - whether to create lagged/led versions
 * lag_n/lead_n - number of positions to lag/lead (default 1)
 * lag_vec/lead_vec - variables to lag/lead. Enter the original variable names (not the _z versions); these must already be in wp_vec. The lag/lead is applied to the standardized values

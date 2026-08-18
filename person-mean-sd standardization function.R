@@ -1,10 +1,10 @@
 
 ps_standardization <- function(df, wp_vec = c(), bp_vec = c(), id, non_c_bp_vars = c(),
-                               lag_bool = FALSE, lead_bool = FALSE, 
+                               lag_bool = FALSE, lead_bool = FALSE,
                                lag_n = 1L, lead_n = 1L, lag_vec = c(), lead_vec = c()) {
   
   #this function assumes (1) your wp_vec and bp_vec will contain within-person and between-person components 
-  #of person-centered variables, respectively, and (2) your data is already temporally arranged.
+  #of person-centered variables, respectively, and (2) that your data is already temporally arranged.
   
   #if you want to lag/lead your variables the lag/lead will be applied to the standardized version; however,
   #you should still enter your lag/lead variables of interest as their original name before standardization
@@ -13,7 +13,7 @@ ps_standardization <- function(df, wp_vec = c(), bp_vec = c(), id, non_c_bp_vars
   #if you did not already filter your df to exclude your id var based on a minimum observation requirement
   #the function will remove those with only one observation because standard deviation of within-person
   #components can not be computed
-
+  
   #non_c_bp_vars is for non centered between-person (i.e., level 2) variables. For example, 
   #if you want to control for and standardize a variable containing the age of participants, but the variable
   #has not yet been centered, you can add the name to non_c_bp_vars
@@ -35,7 +35,15 @@ ps_standardization <- function(df, wp_vec = c(), bp_vec = c(), id, non_c_bp_vars
     
     df <- df |>
       dplyr::group_by(.data[[id]]) |>
-      dplyr::mutate(!!wp_z := .data[[wp_var]] / sd(.data[[wp_var]], na.rm = TRUE)) |>
+      dplyr::mutate(!!wp_z := {
+        s <- sd(.data[[wp_var]], na.rm = TRUE)
+        if(is.na(s) || s == 0) {
+          message(wp_z, " has a within-person SD of 0/NA for ID ", dplyr::first(.data[[id]]))
+          NA_real_
+        } else {
+          .data[[wp_var]] / s
+        }
+      }) |>
       dplyr::ungroup()
   }
   
@@ -50,10 +58,17 @@ ps_standardization <- function(df, wp_vec = c(), bp_vec = c(), id, non_c_bp_vars
       dplyr::pull(s)
     
     df <- df |>
-      dplyr::mutate(!!bp_z := .data[[bp_var]] / global_sd)
+      dplyr::mutate(!!bp_z := {
+        if (is.na(global_sd) || global_sd == 0) {
+          message(bp_z, " has a global SD of 0/NA")
+          NA_real_
+        } else {
+          .data[[bp_var]] / global_sd
+        }
+      })
     
   }
-
+  
   for (non_c_bp_var in non_c_bp_vars) {
     non_c_bp_var_z = paste0(non_c_bp_var, "_z")
     
@@ -65,8 +80,14 @@ ps_standardization <- function(df, wp_vec = c(), bp_vec = c(), id, non_c_bp_vars
                        sd = sd(.data[[non_c_bp_var]], na.rm = TRUE))
     
     df <- df |>
-      dplyr::mutate(!!non_c_bp_var_z := (.data[[non_c_bp_var]] - global_mean_and_sd$mean) / 
-                      global_mean_and_sd$sd)
+      dplyr::mutate(!!non_c_bp_var_z := {
+        if (is.na(global_mean_and_sd$sd) || global_mean_and_sd$sd == 0) {
+          message(non_c_bp_var_z, " has a global SD of 0/NA")
+          NA_real_
+        } else {
+          (.data[[non_c_bp_var]] - global_mean_and_sd$mean) / global_mean_and_sd$sd
+        }
+      })
   }
   
   if (lag_bool == TRUE) {

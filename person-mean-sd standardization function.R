@@ -12,7 +12,7 @@ ps_standardization <- function(df, wp_vec = c(), bp_vec = c(), id, non_c_bp_vars
   
   #if you did not already filter your df to exclude your id var based on a minimum observation requirement
   #the function will remove those with only one observation because standard deviation of within-person
-  #components can not be computed
+  #components can not be computed. Do note that Wang et al. (2019) recommend having 10 observations or more when using this standardization approach.
   
   #non_c_bp_vars is for non centered between-person (i.e., level 2) variables. For example, 
   #if you want to control for and standardize a variable containing the age of participants, but the variable

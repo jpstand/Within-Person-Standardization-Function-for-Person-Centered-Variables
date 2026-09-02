@@ -12,7 +12,7 @@ Function arguments
 * lag_n/lead_n - number of positions to lag/lead (default 1)
 * lag_vec/lead_vec - variables to lag/lead. Enter the original variable names (not the _z versions); these must already be in wp_vec. The lag/lead is applied to the standardized values
 
-This function assumes that data are already sorted in temporal order within person. Participants with only one observation are dropped automatically because a within-person SD can't be computed from a single point.
+This function assumes that data are already sorted in temporal order within person. Participants with only one observation are dropped automatically because a within-person SD can't be computed from a single point. Do note that Wang et al. (2019) recommend having 10 observations or more per cluster when using this standardization approach.
 
 Returns the input data frame with standardized columns marked by an _z, and _z_lag{n} / _z_lead{n} for any lagged/led variables
 
